@@ -54,7 +54,8 @@ int main() {
       shmdt(data);
     }
 
-    file = open("text.txt", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+    file = open("text.txt", O_CREAT, 0644);
+    close(file);
   }
 
   else if(strcmp(temp, "n") == 0) {
@@ -83,7 +84,8 @@ int main() {
     }
 
     struct stat st;
-    stat("test.txt", &st);
+    stat("text.txt", &st);
+
     char* words = malloc(st.st_size);
     int check = read(file, words, st.st_size);
     if(check == -1) {
