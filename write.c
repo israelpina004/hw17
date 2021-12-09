@@ -15,23 +15,23 @@ int main() {
   int shmd, semd, file;
   int* data;
 
-  file = open("text.txt", O_RDWR | O_APPEND);
-
-  shmd = shmget(KEY, 0, 0);
-  data = shmat(shmd, 0, 0);
-
   semd = semget(KEY, 1, 0);
   if(semget < 0) {
     printf("Error with semaphore.\n");
     return 1;
   }
 
+  file = open("text.txt", O_RDWR | O_APPEND);
+
+  shmd = shmget(KEY, 0, 0);
+  data = shmat(shmd, 0, 0);
+
   struct sembuf sb;
   sb.sem_op = -1;
   sb.sem_num = 0;
   sb.sem_flg = SEM_UNDO;
 
-  char temp[100];
+  char* temp = malloc(*data);
 
   semop(semd, &sb, 1);
   lseek(file, -(*data), SEEK_END);
@@ -54,3 +54,4 @@ int main() {
   return 0;
 
 }
+
